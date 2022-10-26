@@ -11,9 +11,6 @@
       <NewTask @newTaskCreated="onNewTaskCreated" ></NewTask>
   </template>
 
-<!--<template>-->
-<!--  <HelloWorld></HelloWorld>-->
-<!--</template>-->
   </div>
 </template>
 
@@ -24,7 +21,6 @@ import TasksList from "@/components/TasksList";
 import {getTasksByCriteria} from "@/components/js/api";
 import SortingTask from "@/components/SortingTask";
 import NewTask from "@/components/NewTask";
-import HelloWorld from "@/components/HelloWorld";
 
 export default {
   name: "TaskManager",
@@ -35,7 +31,6 @@ export default {
 
   components:{
 
-    HelloWorld,
     NewTask,
     SortingTask,
     TasksList,
