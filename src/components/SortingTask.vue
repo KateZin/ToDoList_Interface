@@ -9,52 +9,28 @@
     </v-col>
     <v-col
         cols="12"
-        sm="6"
+        lg="6"
     >
       <v-menu
-          ref="menu"
           v-model="menu"
           :close-on-content-click="false"
-          :return-value.sync="dates"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
+          max-width="290"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-combobox
-              v-model="dates"
-              multiple
-              chips
-              small-chips
-              label="Multiple picker in menu"
-              prepend-icon="mdi-calendar"
+          <v-text-field
+              :value="date"
+              clearable
+              label="Date"
               readonly
               v-bind="attrs"
               v-on="on"
-          ></v-combobox>
+              @click:clear="date = null, onSelectDate()"
+          ></v-text-field>
         </template>
         <v-date-picker
-            v-model="dates"
-            multiple
-            no-title
-            scrollable
-        >
-          <v-spacer></v-spacer>
-          <v-btn
-              text
-              color="primary"
-              @click="menu = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-              text
-              color="primary"
-              @click="$refs.menu.save(dates)"
-          >
-            OK
-          </v-btn>
-        </v-date-picker>
+            v-model="date"
+            @change="menu = false, onSelectDate()"
+        ></v-date-picker>
       </v-menu>
     </v-col>
   </v-row>
@@ -62,7 +38,6 @@
 </template>
 
 <script>
-// import TagManager from "@/components/TagManager";
 import TagsList from "@/components/TagsList";
 
 export default {
@@ -74,9 +49,9 @@ export default {
 
   data () {
     return {
-      dates: [],
+      date: null,
       menu: false,
-      selectedTag: null
+      selectedTag: null,
     }
   },
 
@@ -84,7 +59,13 @@ export default {
     onSelectTag(value){
       this.selectedTag=value
       this.$emit("selectedTag", this.selectedTag)
-    }
+    },
+
+    onSelectDate(){
+      console.log(this.date)
+      this.$emit("selectedDate", this.date)
+    },
+
   }
 
 }

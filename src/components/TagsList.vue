@@ -20,14 +20,9 @@ export default {
 
   props:{
     tagsList: Array,
-    selectedTag: Object,
+    selectedDate: Object,
     title: String
   },
-
-  // model:{
-  //   prop:"selectedTag",
-  //   event:"selected"
-  // },
 
   data(){
     return {

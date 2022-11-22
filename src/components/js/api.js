@@ -16,6 +16,7 @@ export function getAllTags(){
     return axios({
         method: 'get',
         url: baseURL + '/tags',
+        withCredentials: true,
     })
 }
 
@@ -26,9 +27,23 @@ export function addTask(task){
         data:{
             name: task.name,
             comment: task.comment,
-            tagName:task.tag
+            tagName:task.tag,
+            eventDate:task.eventDate,
         },
         url:baseURL + '/tasks',
+        withCredentials: true,
+    })
+}
+
+export function addTag(tag){
+    console.log("i am in TAG" + tag)
+    return axios({
+        method: 'post',
+        data:{
+            tagName: tag.tagName
+        },
+        url:baseURL + '/tags',
+        withCredentials: true,
     })
 }
 
@@ -42,6 +57,31 @@ export function getTasksByCriteria(searchParams){
             date:searchParams.date
         },
         url: baseURL + '/tasks',
+        withCredentials: true,
     })
+}
 
+export function editTask(editParams){
+    console.log("i am in axios!!!!!!!!")
+    console.log(editParams)
+    return axios.request({
+        method: 'patch',
+        params: {
+            name:editParams.name,
+            // comment:editParams.comment,
+            comment:"ho",
+            // eventDate:editParams.date
+        },
+        url: baseURL + '/tasks/edit',
+        withCredentials: true,
+    })
+}
+
+export function deleteTask(task){
+    console.log("i am in deleting func")
+    return axios({
+        method: 'delete',
+        url:baseURL + '/tasks/id?id=' + task.id,
+        withCredentials: true,
+    })
 }

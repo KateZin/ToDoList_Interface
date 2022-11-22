@@ -1,20 +1,29 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-        v-model="drawer"
-        app
-        color = "deep-orange"
+    <v-parallax
+        height="300"
+        src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
     >
+      <v-navigation-drawer
+          v-model="drawer"
+          app
+          color="deep-orange"
+      >
+        <div v-if="!authorization" >
+          With Google: <a href="http://localhost:8080/oauth2/authorization/google">click here</a>
+        </div>
 
-      <v-btn @click="showTasks" block="true">Show all tasks</v-btn>
-      <br>
-      <v-btn @click="showTags" block="true">Show all tags</v-btn>
-      <br>
-      <v-btn @click="createTask" block="true">Create new task</v-btn>
+        <v-btn @click="showTasks" block="true">Show all tasks</v-btn>
+        <br>
+        <v-btn @click="showTags" block="true">Show all tags</v-btn>
+        <br>
+        <v-btn @click="createTask" block="true">Create new task</v-btn>
+        <br>
+        <v-btn @click="showCalendar" block="true">Calendar</v-btn>
+        <br>
 
-
-    </v-navigation-drawer>
-
+      </v-navigation-drawer>
+    </v-parallax>
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
@@ -22,21 +31,23 @@
     </v-app-bar>
 
     <v-main>
-      <TaskManager v-if="showTaskManager()" :tagsList="tagsList" :mode="taskManagerMode" ></TaskManager>
+
+      <HelloWorld></HelloWorld>
+      <TaskManager v-if="showTaskManager()" :tagsList="tagsList" :mode="taskManagerMode" @newTagCreated="PushTag" ></TaskManager>
       <TagManager v-if="flag==='showTags'"></TagManager>
 
+
     </v-main>
+
   </v-app>
 </template>
 
 
 <script>
- // import TasksList from "@/components/TasksList";
 import {getTasksByCriteria} from "@/components/js/api";
- import {getAllTags} from "@/components/js/api";
- import TaskManager from "@/components/TaskManager";
- import TagManager from "@/components/TagManager";
-
+import {getAllTags} from "@/components/js/api";
+import TaskManager from "@/components/TaskManager";
+import TagManager from "@/components/TagManager";
 export default {
   components:{
     TaskManager,
@@ -45,6 +56,7 @@ export default {
 
   data(){
     return {
+      authorization: false,
       drawer: null,
       tasksList:[],
       tagsList: [],
@@ -74,6 +86,25 @@ export default {
       this.tasksList.push(newTask)
     },
 
+    enter(){
+      this.authorization = true;
+    },
+
+    logInPage(){
+      this.flag = 'logInPage'
+    },
+
+    showCalendar(){
+      this.flag="calendar"
+    },
+
+    PushTag(value){
+      const newTag = {
+        tagName:value.tagName
+      }
+      this.tagsList.push(newTag)
+    },
+
     showTasks(){
       this.flag="show"
       this.taskManagerMode='show'
@@ -97,6 +128,5 @@ export default {
 
   }
 }
-
 
 </script>
