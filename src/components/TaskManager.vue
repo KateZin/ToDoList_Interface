@@ -14,10 +14,8 @@
         ></v-switch>
       </v-container>
       <SortingTask  :tagsList="tagsList" @selectedTag="onTagSelect" @selectedDate="onSelectedDate"></SortingTask>
-      {{date}}
-      <TasksList v-if="switch1===false" v-bind:tasksList="tasksList" title="Tasks" @deleteTask="onDeleteTask" @editTask="onEditTask" ></TasksList>
-      <TasksCard v-if="switch1===true" v-bind:tasksList="tasksList" title="Cards" @deleteTask="onDeleteTask" ></TasksCard>
-
+      <TasksList v-if="switch1===false && calendar===false" v-bind:tasksList="tasksList" title="Tasks" @deleteTask="onDeleteTask" @editTask="onEditTask" ></TasksList>
+      <TasksCard v-if="switch1===true && calendar===false" v-bind:tasksList="tasksList" title="Cards" @deleteTask="onDeleteTask" @editTask="onEditTask" ></TasksCard>
     </template>
 
     <template v-if="mode==='add'">
@@ -34,7 +32,6 @@ import TasksList from "@/components/TasksList";
 import {deleteTask, getTasksByCriteria, editTask} from "@/components/js/api";
 import SortingTask from "@/components/SortingTask";
 import NewTask from "@/components/NewTask";
-import TaskCalendar from "@/components/TaskCalendar";
 import TasksCard from "@/components/TasksCard";
 
 export default {
@@ -45,7 +42,6 @@ export default {
   },
 
   components:{
-    TaskCalendar,
     NewTask,
     SortingTask,
     TasksList,
@@ -55,6 +51,7 @@ export default {
   data(){
     return {
       switch1: false,
+      calendar: false,
       showMode: "list",
       tasksList:[],
       flag:"",
@@ -83,15 +80,13 @@ export default {
       return res.data
     },
 
-    switchShowMode(){
-      console.log(this.showMode)
-      if(this.showMode === "cards"){
-        this.showMode = "list"
+    showCalendar(){
+      if(this.calendar === true){
+        this.calendar = false
       }
-      if(this.showMode==="list"){
-        this.showMode = "cards"
+      if(this.calendar === false){
+        this.calendar = true
       }
-      console.log(this.showMode)
     },
 
     CreateNewTag(value){
@@ -101,9 +96,11 @@ export default {
     onNewTaskCreated(event) {
       console.log(event);
       const newTask={
+        id:event.id,
         name:event.name,
         comment:event.comment,
-        tagName:event.tag
+        tagName:event.tag,
+        eventDate:event.eventDate
       }
       this.tasksList.push(newTask)
     },
@@ -136,7 +133,7 @@ export default {
     },
 
     async onEditTask(item){
-      await editTask(item)
+      await editTask(item.id, item)
       this.tasksList = await this.getTasks()
     }
   }
@@ -147,7 +144,9 @@ export default {
 
 <style scoped>
 .text-md-center{
-  font-size: large;
+  font-size: xxx-large;
   font-style: revert;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
 }
 </style>

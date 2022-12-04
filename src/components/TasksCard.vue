@@ -1,4 +1,5 @@
 <template >
+  <div class="list">
   <v-row class="fill-height overflow-auto" id="container">
     <v-col
         v-for="(item,i) in tasksList"
@@ -6,39 +7,54 @@
         :item = "item"
         :cols="(12/itemsPerRow)"
     >
-      <v-card min-height="200">
-        <v-card-title>
-                  <span >
-                    <span v-text="item.name"></span>
-                    <span v-text="item.tagName"></span>
+      <v-card min-height="100" raised="true"  >
+        <v-card-title class="header"  >
+                  <span  >
+                    <span class="text" v-text="item.name"></span>
                   </span>
         </v-card-title>
+        <v-divider v-if="item.eventDate!==null"></v-divider>
+        <br v-if="item.eventDate">
+        <v-chip v-if="item.eventDate" v-text="processDate(item.eventDate)" class="date"></v-chip>
         <v-card-text>
-          <v-divider v-if="item.comment!==null"></v-divider>
-          <span v-text="item.comment"></span>
-          <br>
-          <v-divider v-if="item.eventDate!==null"></v-divider>
-          <br>
-          <br>
-          <v-chip v-if="item.eventDate!==null" v-text="processDate(item.eventDate)"></v-chip>
+          <br v-if="item.comment && !item.eventDate">
+          <v-textarea
+              v-if="item.comment"
+              :value="item.comment"
+              readonly
+              class="comment"
+              auto-grow
+              outlined=true
+              append-icon="mdi-comment"
+          ></v-textarea>
+
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn icon>
-            <v-icon @click="onDeleteTask(item)">mdi-delete</v-icon>
-          </v-btn>
-
-        </v-card-actions>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn icon outlined>
+                    <v-icon @click.stop="()=>{dialogWindow=true; itemToEdit=item}">mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn icon outlined>
+                    <v-icon @click="onDeleteTask(item)">mdi-check</v-icon>
+                  </v-btn>
+                </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
+  <EditTask v-if="dialogWindow" v-model="dialogWindow" :oldTask="itemToEdit" @editTask="onEditTask"/>
+  </div>
 </template>
 
 <script>
 
+import EditTask from "@/components/EditTask";
+
 export default {
   name: "TasksCard",
+  components: {
+    EditTask
+  },
+
   props:{
     tasksList: Array,
   },
@@ -46,6 +62,8 @@ export default {
   data(){
     return {
       quantityPerRow:5,
+      dialogWindow:false,
+      itemToEdit:''
     }
   },
 
@@ -96,7 +114,13 @@ export default {
     processDate(date){
       if(date !== null)
       return date.substr(0, 10);
-    }
+    },
+
+    async onEditTask(item){
+      this.$emit("editTask", item);
+      this.itemToEdit = null
+    },
+
   },
 
   created() {
@@ -108,7 +132,27 @@ export default {
 </script>
 
 <style >
+.list{
+  margin-bottom: 100px;
+}
 
+.text{
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.comment{
+  font-family: Verdana;
+  font-size: 12px;
+}
+.date{
+  margin-left: 15px;
+}
+
+.header{
+  background-color: orangered;
+}
 </style>
 
 

@@ -1,16 +1,22 @@
 <template>
   <div>
     <v-container>
-    <H2>Add new Task</H2>
-    <v-text-field label="Enter task" v-model="name"></v-text-field>
-    <v-text-field label="Comment" v-model="comment"></v-text-field>
+    <H2 class="text-md-center">Add new Task</H2>
+    <v-text-field class='task' label="Enter task" v-model="name"  :rules="rules"></v-text-field>
+<!--    <v-text-field label="Comment" v-model="comment"></v-text-field>-->
+      <br>
+      <v-textarea
+          class='comment'
+          placeholder="Comment"
+          outlined
+          auto-grow
+          v-model="comment"></v-textarea>
     <v-row>
     <v-col
         cols="12"
         sm="4"
     >
     <TagsList v-bind:tagsList="tagsList" title="Tags"  @selected="onSelectTag"></TagsList>
-
     </v-col>
     <v-col
         cols="12"
@@ -24,26 +30,33 @@
    <NewTag v-if="flag==='newTag'" @newTagCreated="onNewTagCreated" ></NewTag>
     </v-col>
     </v-row>
-
-    <v-btn @click="onDateAdd" v-madel="date">Add date</v-btn>
+      <v-row>
+      <h3>{{date}}</h3>
+      <v-btn icon v-if="date">
+        <v-icon @click="onDeleteDate">mdi-delete</v-icon>
+      </v-btn>
+      </v-row>
+      <br>
+    <v-btn @click="onDateAdd">Add date</v-btn>
       <br>
       <v-row>
         <v-col
             cols="12"
             sm="4" >
-      <template v-if="flag==='showCalendar'">
+      <template v-if="showCalendar==='show'">
         <v-date-picker
             v-model="date"
             color="deep-orange"
             header-color="deep-orange"
             no-title
             scrollable
+            :allowed-dates="disablePastDates"
         ></v-date-picker>
+
       </template>
         </v-col>
       </v-row>
 <br>
-
 
   <v-btn @click="createNewTask">Add  task</v-btn>
     </v-container>
@@ -71,9 +84,15 @@ export default {
      comment: "",
      tag: "",
      date:"",
-     flag:""
+     flag:"",
+     showCalendar: 'hide',
+     rules: [
+       value => !!value || 'Required.',
+       value => (value && value.length >= 1) || 'Min 3 characters',
+     ]
    }
   },
+
   methods: {
     async createNewTask(){
       const task = {
@@ -82,29 +101,71 @@ export default {
         tag:this.tag,
         eventDate:this.date
       }
-      await addTask(task)
+      const newTask = await addTask(task)
+      task.id = newTask.id
       console.log("a have added a new task!")
+      console.log(task)
       this.$emit("newTaskCreated", task)
+      this.name = ''
+      this.comment = ''
+      this.date = ''
     },
 
     onNewTagCreated(value) {
       this.$emit("newTagCreated", value)
+      this.flag = ''
+    },
+
+    disablePastDates(val) {
+      return val >= new Date().toISOString().substr(0, 10)
     },
 
     onSelectTag(value){
       this.tag=value.tagName
     },
 
+    onDeleteDate(){
+      this.date = ''
+    },
+
     onNewTag(){
-      console.log("flag = new tag")
       this.flag="newTag"
     },
 
+
     onDateAdd(){
-      this.flag="showCalendar"
+      if(this.showCalendar==='hide') {
+        this.showCalendar = 'show'
+      }
+      else if(this.showCalendar==='show') {
+        this.showCalendar = 'hide'
+      }
     }
   },
 };
 </script>
 
-<style></style>
+<style>
+.text-md-center{
+  font-size: xxx-large;
+  font-style: revert;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.comment {
+  color: white;
+  font-family: Verdana;
+  font-size: 20px;
+  height:160px;
+  width: 500px;
+}
+
+.task{
+  margin-top: 20px;
+  color: white;
+  font-family: Verdana;
+  font-size: 20px;
+  width: 500px;
+}
+</style>

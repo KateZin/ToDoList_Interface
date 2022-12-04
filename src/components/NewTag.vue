@@ -30,6 +30,7 @@ export default {
       console.log(tag)
       await addTag(tag)
       this.$emit("newTagCreated", tag)
+      this.newTag = ''
     },
   }
 

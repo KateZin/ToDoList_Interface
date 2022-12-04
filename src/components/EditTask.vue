@@ -1,33 +1,31 @@
 <template>
-  <v-dialog v-model="show" max-width="700px" >
+  <v-dialog v-model="show" max-width="700px"  >
     <v-card >
-      <v-card-text>
+      <v-card-text class="v-card-text">
+
         <v-container>
-          <v-row>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <h3>Task: </h3>
-              <h3 contenteditable @input="setName($event)">
-                {{ oldTask.name }}
-              </h3>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-            </v-col>
-            <v-col cols="12">
-              <h3>Comment: </h3>
-              <h2 v-if="oldTask.comment!==''" contenteditable @input="setComment($event)">
-                {{ oldTask.comment }}
-              </h2>
-              <div v-if="oldTask.comment === ''" contentEditable=true data-text="Enter comment here"></div>
-            </v-col>
-            <v-btn @click="onDateAdd" v-model="date">Add date</v-btn>
+              <br>
+          <H2 class="text-md-center">Edit Task</H2>
+              <br>
+              <br>
+              <v-text-field
+                  v-model="name"
+                  label="Task"
+                  outlined
+                  clearable
+                  :rules="rules"
+              ></v-text-field>
+
+
+              <v-textarea class="comment"
+                          placeholder="Comment"
+                          v-model="comment"
+                          auto-grow
+                          outlined=true
+                          append-icon="mdi-comment"
+              ></v-textarea>
+
+            <v-btn @click="onDateAdd">Add date</v-btn>
             <br>
                 <template v-if="flag==='showCalendar'">
                   <v-date-picker
@@ -38,7 +36,7 @@
                       scrollable
                   ></v-date-picker>
                 </template>
-          </v-row>
+
         </v-container>
       </v-card-text>
       <v-card-actions>
@@ -46,7 +44,7 @@
         <br>
         <br>
         <v-btn color="deep-orange" flat @click.stop="show=false; eraseValues">Cancel</v-btn>
-        <v-btn color="deep-orange" flat @click="saveValues" @click.stop="show=false">Save</v-btn>
+        <v-btn color="deep-orange" flat @click="saveValues" >Save</v-btn>
       </v-card-actions>
     </v-card>
 
@@ -54,7 +52,7 @@
 </template>
 
 <script>
-import {editTask} from "@/components/js/api";
+
 export default {
   props: {
     value: Boolean,
@@ -65,11 +63,13 @@ export default {
     return{
       flag:'',
       editingName:false,
-      tag:'',
-      name:'',
-      comment:'',
-      date:'',
-      editedTask:{}
+      name: this.oldTask?.name,
+      comment: this.oldTask?.comment,
+      date: this.oldTask?.eventDate,
+      rules: [
+        value => !!value || 'Required.',
+        value => (value && value.length >= 3) || 'Min 3 characters',
+      ]
     }
   },
   computed: {
@@ -81,29 +81,18 @@ export default {
         this.$emit('input', value)
       },
       setProperty(){
+        console.log("i am in set property task")
         this.name = this.oldTask.name;
       }
     }
   },
 
   methods: {
-    setName(e) {
-      const inputText = e.target.innerText;
-      this.name = inputText;
-      editTask.name=inputText
-    },
+
     onDateAdd(){
       this.flag="showCalendar"
     },
-    setTag(e){
-      const inputText = e.target.innerText;
-      this.tag = inputText;
-    },
-    setComment(e){
-      const inputText = e.target.innerText;
-      this.comment = inputText;
-      editTask.comment=inputText
-    },
+
     eraseValues(){
       this.name = "";
       this.comment = "";
@@ -112,14 +101,23 @@ export default {
     },
 
     async saveValues() {
-      let newTask = {
-        name: this.name,
-        comment: this.comment,
-        date: this.date
+      if(!this.name){
+        return
       }
-      console.log(this.editedTask)
-      await editTask(newTask);
-      this.$emit("editTask", newTask)
+      const editTask = {
+        id: this.oldTask.id
+      };
+      if(this.oldTask.name !== this.name){
+        editTask.name = this.name;
+      }
+      if(this.oldTask.comment !== this.comment){
+        editTask.comment = this.comment || "";
+      }
+      if(this.oldTask.eventDate !== this.date){
+        editTask.eventDate = this.date;
+      }
+      this.$emit("editTask", editTask)
+      this.show=false
     }
   }
 }
@@ -129,4 +127,12 @@ export default {
 [contentEditable=true]:empty:not(:focus):before {
   content: attr(data-text)
 }
+
+
+.comment{
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+
 </style>

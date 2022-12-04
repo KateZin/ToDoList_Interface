@@ -7,7 +7,7 @@
         item-text="tagName"
         return-object
         single-line
-        clearable="true"
+        clearable=true
         @change="changeTag"
     ></v-select>
 
@@ -20,14 +20,13 @@ export default {
 
   props:{
     tagsList: Array,
-    selectedDate: Object,
     title: String
   },
 
   data(){
     return {
-     tagNames: Array,
-      selectedItem: this.selectedTag
+      tagNames: Array,
+      selectedItem: ''
     }
   },
 
@@ -35,6 +34,7 @@ export default {
     changeTag(){
       console.log("TagsList::changeTag")
       this.$emit("selected", this.selectedItem)
+      this.selectedItem = ''
     }
   }
 
