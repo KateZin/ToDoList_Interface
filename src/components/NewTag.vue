@@ -5,8 +5,11 @@
           cols="12"
           sm="12"
       >
-  <v-text-field label="New Tag" v-model="newTag"></v-text-field>
-    <v-btn @click="createNewTag"> Create</v-btn>
+  <v-text-field
+      label="New Tag"
+      v-model="newTag"
+  ></v-text-field>
+    <v-btn @click="createNewTag"> Create </v-btn>
       </v-col>
     </v-row>
   </div>
@@ -27,7 +30,6 @@ export default {
       const tag = {
         tagName: this.newTag,
       }
-      console.log(tag)
       await addTag(tag)
       this.$emit("newTagCreated", tag)
       this.newTag = ''
@@ -38,5 +40,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

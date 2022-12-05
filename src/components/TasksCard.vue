@@ -1,17 +1,17 @@
 <template >
   <div class="list">
-  <v-row class="fill-height overflow-auto" id="container">
+  <v-row class="fill-height overflow-auto">
     <v-col
         v-for="(item,i) in tasksList"
         :key="i"
         :item = "item"
         :cols="(12/itemsPerRow)"
     >
-      <v-card min-height="100" raised="true"  >
+      <v-card
+          min-height="100"
+          raised="true"  >
         <v-card-title class="header"  >
-                  <span  >
-                    <span class="text" v-text="item.name"></span>
-                  </span>
+          <span class="text" v-text="item.name"></span>
         </v-card-title>
         <v-divider v-if="item.eventDate!==null"></v-divider>
         <br v-if="item.eventDate">
@@ -27,17 +27,20 @@
               outlined=true
               append-icon="mdi-comment"
           ></v-textarea>
-
         </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn icon outlined>
-                    <v-icon @click.stop="()=>{dialogWindow=true; itemToEdit=item}">mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn icon outlined>
-                    <v-icon @click="onDeleteTask(item)">mdi-check</v-icon>
-                  </v-btn>
-                </v-card-actions>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn icon outlined>
+            <v-icon
+                @click.stop="()=>{dialogWindow=true; itemToEdit=item}"
+            >
+              mdi-pencil
+            </v-icon>
+          </v-btn>
+          <v-btn icon outlined>
+            <v-icon @click="onDeleteTask(item)">mdi-check</v-icon>
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
@@ -46,7 +49,6 @@
 </template>
 
 <script>
-
 import EditTask from "@/components/EditTask";
 
 export default {
@@ -72,10 +74,6 @@ export default {
       return Math.ceil(this.tasksList.length / this.quantityPerRow)
     },
 
-    numberOfPages () {
-      return Math.ceil(this.beers.length / this.ipp)
-    },
-
     rowsPerPage () {
       return this.rpp
     },
@@ -88,7 +86,6 @@ export default {
       return Math.ceil(this.rowsPerPage * this.itemsPerRow)
     },
   },
-
 
   methods:{
     async onDeleteTask(item){
@@ -120,7 +117,6 @@ export default {
       this.$emit("editTask", item);
       this.itemToEdit = null
     },
-
   },
 
   created() {
@@ -135,13 +131,11 @@ export default {
 .list{
   margin-bottom: 100px;
 }
-
 .text{
   font-family: Verdana;
   font-size: 20px;
   font-weight: bold;
 }
-
 .comment{
   font-family: Verdana;
   font-size: 12px;
@@ -149,7 +143,6 @@ export default {
 .date{
   margin-left: 15px;
 }
-
 .header{
   background-color: orangered;
 }

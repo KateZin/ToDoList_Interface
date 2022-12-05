@@ -1,39 +1,55 @@
 <template>
   <div >
     <h2 class="text-md-center">Tags</h2>
-    <TagsList v-bind:tagsList="tagsList" title="Tags"></TagsList>
-    <v-row class="fill-height overflow-auto" id="container">
-      <v-col
+    <TagsList
+        v-bind:tagsList="tagsList"
+        title="Tags"
+    ></TagsList>
+    <v-container class="list">
+      <v-row class="fill-height overflow-auto">
+        <v-col
           v-for="(item,i) in tagsList"
           :key="i"
           :item = "item"
           :cols="(12/itemsPerRow)"
-      >
-        <v-card min-height="20">
-          <v-card-title>
-                  <span >
-                    <span v-text="item.tagName" ></span>
-                  </span>
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon @click="()=>{ dialogWindow=true, itemToEdit=item}">mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon @click="onDeleteTag(item)">mdi-delete</v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-    <EditTag v-if="dialogWindow" v-model="dialogWindow" :oldTag="itemToEdit" @editedTag="updateTags"></EditTag>
+        >
+          <v-card min-height="20">
+            <v-card-title>
+              <span v-text="item.tagName" ></span>
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn icon>
+                <v-icon
+                  @click="()=>{ dialogWindow=true, itemToEdit=item}"
+                >
+                mdi-pencil
+                </v-icon>
+              </v-btn>
+              <v-btn icon>
+                <v-icon
+                  @click="onDeleteTag(item)"
+                >
+                mdi-delete
+                </v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+      <EditTag
+          v-if="dialogWindow"
+          v-model="dialogWindow"
+          :oldTag="itemToEdit"
+          @editedTag="updateTags"
+      ></EditTag>
+    </v-container>
   </div>
 </template>
 
 <script>
 import TagsList from "@/components/TagsList";
-import {deleteTag, editTag, getAllTags, getTasksByCriteria} from "@/components/js/api";
+import {deleteTag, getAllTags} from "@/components/js/api";
 import EditTag from "@/components/EditTag";
 
 export default {
@@ -52,6 +68,7 @@ export default {
       dialogWindow: false
     }
   },
+
   async created(){
     console.log("I am in created in tag manager to get tags");
     const res = await getAllTags();
@@ -62,10 +79,6 @@ export default {
   computed:{
     rowsNum(){
       return Math.ceil(this.tasksList.length / this.quantityPerRow)
-    },
-
-    numberOfPages () {
-      return Math.ceil(this.beers.length / this.ipp)
     },
 
     rowsPerPage () {
@@ -82,12 +95,6 @@ export default {
   },
 
   methods: {
-    async onEditTag(id, item) {
-      console.log(item.tagName)
-      console.log("I edit tag")
-      await editTag(item.id, item)
-    },
-
     itemPosition(rowNum, colNum) {
       return rowNum * this.quantityPerRow + colNum;
     },
@@ -120,18 +127,6 @@ export default {
       this.tagsList = res.data;
       this.$emit("deletedTag")
     },
-
-    async getTasksByTag(tag){
-      const params = {}
-      params.tagName = tag.tagName
-      const res = await getTasksByCriteria(params);
-      console.log(tag)
-      console.log(res.data.length)
-      let count = res.data.length
-      console.log(count.toString())
-      //return count.toString()
-      return "2"
-    },
   }
 
 }
@@ -144,5 +139,7 @@ export default {
   font-family: 'Courier New', monospace;
   font-weight: bold;
 }
-
+.list{
+  margin-bottom: 500px;
+}
 </style>

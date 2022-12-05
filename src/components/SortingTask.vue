@@ -5,7 +5,10 @@
         cols="12"
         sm="6"
     >
-      <TagsList v-bind:tagsList="tagsList" title="Tags"  @selected="onSelectTag" ></TagsList>
+      <TagsList
+          v-bind:tagsList="tagsList"
+          title="Tags"
+          @selected="onSelectTag" ></TagsList>
     </v-col>
     <v-col
         cols="12"
@@ -33,7 +36,6 @@
         ></v-date-picker>
       </v-menu>
     </v-col>
-
   </v-row>
 </div>
 </template>
@@ -63,15 +65,11 @@ export default {
     },
 
     onSelectDate(){
-      console.log(this.date)
       this.$emit("selectedDate", this.date)
     },
-
   }
-
 }
 </script>
 
 <style scoped>
-
 </style>

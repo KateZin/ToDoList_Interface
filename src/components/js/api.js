@@ -1,16 +1,6 @@
 import axios from "axios";
 
-// we will make a GET request
-//change url and create one funtion
-//then call it smw
 const baseURL = 'http://localhost:8080'
-
-// export function getAllTasks(){
-//     return axios({
-//         method: 'get',
-//         url: baseURL + '/tasks',
-//     })
-// }
 
 export function getUser(){
     console.log("I am in getUser api.js")
@@ -70,8 +60,6 @@ export function getTasksByCriteria(searchParams){
         withCredentials: true,
     })
 }
-
-
 
 export function editTask(id, editParams){
     console.log("i am in axios!!!!!!!!")

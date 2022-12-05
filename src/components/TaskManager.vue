@@ -1,6 +1,6 @@
 <template>
   <div >
-    <template v-if="mode==='show'" >
+    <template v-if="mode==='show'">
       <p class="text-md-center" >
         You CAN do it!
       </p>
@@ -13,15 +13,31 @@
             :label="`Change the display of tasks`"
         ></v-switch>
       </v-container>
-      <SortingTask  :tagsList="tagsList" @selectedTag="onTagSelect" @selectedDate="onSelectedDate"></SortingTask>
-      <TasksList v-if="switch1===false && calendar===false" v-bind:tasksList="tasksList" title="Tasks" @deleteTask="onDeleteTask" @editTask="onEditTask" ></TasksList>
-      <TasksCard v-if="switch1===true && calendar===false" v-bind:tasksList="tasksList" title="Cards" @deleteTask="onDeleteTask" @editTask="onEditTask" ></TasksCard>
+      <SortingTask
+          :tagsList="tagsList"
+          @selectedTag="onTagSelect"
+          @selectedDate="onSelectedDate"
+      ></SortingTask>
+      <TasksList
+          v-if="switch1===false && calendar===false"
+          v-bind:tasksList="tasksList"
+          title="Tasks" @deleteTask="onDeleteTask"
+          @editTask="onEditTask"
+      ></TasksList>
+      <TasksCard
+          v-if="switch1===true && calendar===false"
+          v-bind:tasksList="tasksList"
+          title="Cards"
+          @deleteTask="onDeleteTask"
+          @editTask="onEditTask" ></TasksCard>
     </template>
-
     <template v-if="mode==='add'">
-      <NewTask :tagsList="tagsList" @newTaskCreated="onNewTaskCreated" @newTagCreated="CreateNewTag" ></NewTask>
+      <NewTask
+          :tagsList="tagsList"
+          @newTaskCreated="onNewTaskCreated"
+          @newTagCreated="CreateNewTag"
+      ></NewTask>
     </template>
-
   </div>
 </template>
 
@@ -138,8 +154,6 @@ export default {
     }
   }
 }
-
-
 </script>
 
 <style scoped>

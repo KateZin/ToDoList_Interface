@@ -1,8 +1,10 @@
 <template>
-  <v-dialog v-model="show" max-width="700px"  >
+  <v-dialog
+      v-model="show"
+      max-width="700px"
+  >
     <v-card >
       <v-card-text class="v-card-text">
-
         <v-container>
               <br>
           <H2 class="text-md-center">Edit Task</H2>
@@ -15,17 +17,15 @@
                   clearable
                   :rules="rules"
               ></v-text-field>
-
-
-              <v-textarea class="comment"
-                          placeholder="Comment"
-                          v-model="comment"
-                          auto-grow
-                          outlined=true
-                          append-icon="mdi-comment"
+              <v-textarea
+                  class="comment"
+                  placeholder="Comment"
+                  v-model="comment"
+                  auto-grow
+                  outlined=true
+                  append-icon="mdi-comment"
               ></v-textarea>
-
-            <v-btn @click="onDateAdd">Add date</v-btn>
+            <v-btn @click="onDateAdd"> Add date </v-btn>
             <br>
                 <template v-if="flag==='showCalendar'">
                   <v-date-picker
@@ -36,23 +36,32 @@
                       scrollable
                   ></v-date-picker>
                 </template>
-
         </v-container>
       </v-card-text>
       <v-card-actions>
         <br>
         <br>
         <br>
-        <v-btn color="deep-orange" flat @click.stop="show=false; eraseValues">Cancel</v-btn>
-        <v-btn color="deep-orange" flat @click="saveValues" >Save</v-btn>
+        <v-btn
+            color="deep-orange"
+            flat
+            @click.stop="show=false; eraseValues"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+            color="deep-orange"
+            flat
+            @click="saveValues"
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
-
   </v-dialog>
 </template>
 
 <script>
-
 export default {
   props: {
     value: Boolean,
@@ -80,10 +89,6 @@ export default {
       set (value) {
         this.$emit('input', value)
       },
-      setProperty(){
-        console.log("i am in set property task")
-        this.name = this.oldTask.name;
-      }
     }
   },
 
@@ -127,12 +132,8 @@ export default {
 [contentEditable=true]:empty:not(:focus):before {
   content: attr(data-text)
 }
-
-
 .comment{
   font-family: Verdana;
   font-size: 12px;
 }
-
-
 </style>

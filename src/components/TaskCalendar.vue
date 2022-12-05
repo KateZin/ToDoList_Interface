@@ -1,20 +1,19 @@
 <template>
 <div>
   <h2 class="text-md-center">Calendar</h2>
-<v-sheet
+  <v-sheet
     tile
     height="54"
     class="d-flex"
->
-  <v-btn
+  >
+    <v-btn
       icon
       class="ma-2"
       @click="$refs.calendar.prev()"
-  >
-    <v-icon>mdi-chevron-left</v-icon>
-  </v-btn>
-
-  <v-select
+    >
+      <v-icon>mdi-chevron-left</v-icon>
+    </v-btn>
+    <v-select
       v-model="weekday"
       :items="weekdays"
       dense
@@ -22,16 +21,16 @@
       hide-details
       label="weekdays"
       class="ma-2"
-  ></v-select>
-  <v-btn
+    ></v-select>
+    <v-btn
       icon
       class="ma-2"
       @click="$refs.calendar.next()"
-  >
-    <v-icon>mdi-chevron-right</v-icon>
-  </v-btn>
-</v-sheet>
-<v-sheet height="600">
+    >
+      <v-icon>mdi-chevron-right</v-icon>
+    </v-btn>
+  </v-sheet>
+  <v-sheet height="600">
       <div
           class="ma-4"
           style="height: 100%"
@@ -43,7 +42,6 @@
             :weekdays="weekday"
             :type="type"
             event-color="deep-orange"
-            now="2022-04-17"
             @click:event="showEvent"
         ></v-calendar>
       </div>
@@ -61,7 +59,6 @@
       <v-toolbar>
         <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
         <v-spacer></v-spacer>
-
       </v-toolbar>
       <v-card-text>
         <v-textarea
@@ -159,7 +156,7 @@ export default {
       nativeEvent.stopPropagation()
     },
   }
-  };
+}
 </script>
 
 <style>

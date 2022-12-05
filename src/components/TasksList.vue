@@ -20,18 +20,31 @@
               cols="12"
               sm="2"
           >
-        <v-chip v-if="item.tagName"  color="deep-orange"
-               left text-color="white" >{{item.tagName}}
-          </v-chip>
+        <v-chip
+            v-if="item.tagName"
+            color="deep-orange"
+            left
+            text-color="white"
+        >
+          {{item.tagName}}
+        </v-chip>
           </v-col>
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
+        <v-divider></v-divider>
         <v-btn icon >
-          <v-icon v-if="item.comment" @click="changeComment(item)" :color=getCommentColour() large>mdi-comment</v-icon>
+          <v-icon
+              v-if="item.comment"
+              @click="changeComment(item)"
+              :color=getCommentColour()
+              large
+          >
+            mdi-comment
+          </v-icon>
         </v-btn>
-        <span v-if="!readOnly && item.comment" >You can edit comment</span>
-        <span v-if="readOnly && item.comment" >Click to edit comment</span>
+        <span v-if="!readOnly && item.comment">You can edit comment</span>
+        <span v-if="readOnly && item.comment">Click to edit comment</span>
         <v-textarea
             v-if="item.comment"
             :value="item.comment"
@@ -41,7 +54,6 @@
             auto-grow
             outlined=true
         ></v-textarea>
-
         <div v-if="item.eventDate">
         <v-chip v-text="processDate(item.eventDate)"></v-chip>
         </div>
@@ -62,7 +74,6 @@
             <v-btn @click="onDeleteTask(item)" color="red">Done</v-btn>
           </v-col>
         </v-row>
-
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -70,10 +81,13 @@
 </template>
 
 <script>
-
 import EditTask from "@/components/EditTask";
 export default {
   name: "TasksList",
+  props:{
+    tasksList: Array,
+    title: String
+  },
   components: {
     EditTask
   },
@@ -83,11 +97,6 @@ export default {
       dialogWindow: false,
       readOnly:true
     }
-  },
-
-  props:{
-    tasksList: Array,
-    title: String
   },
 
   methods:{
@@ -118,9 +127,7 @@ export default {
         return "deep-orange"
       }
     }
-
   }
-
 }
 </script>
 
@@ -136,7 +143,6 @@ chipStyle {
   font-size: 20px;
   font-weight: bold;
 }
-
 textarea{
   font-family: Verdana;
   height:5px;

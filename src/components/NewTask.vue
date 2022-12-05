@@ -2,8 +2,12 @@
   <div>
     <v-container>
     <H2 class="text-md-center">Add new Task</H2>
-    <v-text-field class='task' label="Enter task" v-model="name"  :rules="rules"></v-text-field>
-<!--    <v-text-field label="Comment" v-model="comment"></v-text-field>-->
+    <v-text-field
+        class='task'
+        label="Enter task"
+        v-model="name"
+        :rules="rules"
+    ></v-text-field>
       <br>
       <v-textarea
           class='comment'
@@ -16,18 +20,24 @@
         cols="12"
         sm="4"
     >
-    <TagsList v-bind:tagsList="tagsList" title="Tags"  @selected="onSelectTag"></TagsList>
+    <TagsList
+        v-bind:tagsList="tagsList"
+        title="Tags"
+        @selected="onSelectTag"
+    ></TagsList>
     </v-col>
     <v-col
         cols="12"
         sm="2" >
-    <v-btn @click="onNewTag" >Create new tag</v-btn>
+    <v-btn @click="onNewTag">Create new tag</v-btn>
     </v-col>
-
     <v-col
         cols="12"
         sm="4" >
-   <NewTag v-if="flag==='newTag'" @newTagCreated="onNewTagCreated" ></NewTag>
+   <NewTag
+       v-if="flag==='newTag'"
+       @newTagCreated="onNewTagCreated"
+   ></NewTag>
     </v-col>
     </v-row>
       <v-row>
@@ -52,13 +62,11 @@
             scrollable
             :allowed-dates="disablePastDates"
         ></v-date-picker>
-
       </template>
         </v-col>
       </v-row>
-<br>
-
-  <v-btn @click="createNewTask">Add  task</v-btn>
+      <br>
+      <v-btn @click="createNewTask">Add  task</v-btn>
     </v-container>
   </div>
 </template>
@@ -103,8 +111,6 @@ export default {
       }
       const newTask = await addTask(task)
       task.id = newTask.id
-      console.log("a have added a new task!")
-      console.log(task)
       this.$emit("newTaskCreated", task)
       this.name = ''
       this.comment = ''
@@ -132,7 +138,6 @@ export default {
       this.flag="newTag"
     },
 
-
     onDateAdd(){
       if(this.showCalendar==='hide') {
         this.showCalendar = 'show'
@@ -152,7 +157,6 @@ export default {
   font-family: 'Courier New', monospace;
   font-weight: bold;
 }
-
 .comment {
   color: white;
   font-family: Verdana;
@@ -160,7 +164,6 @@ export default {
   height:160px;
   width: 500px;
 }
-
 .task{
   margin-top: 20px;
   color: white;

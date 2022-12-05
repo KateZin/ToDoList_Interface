@@ -10,14 +10,12 @@
         clearable=true
         @change="changeTag"
     ></v-select>
-
   </div>
 </template>
 
 <script>
 export default {
   name: "TagsList",
-
   props:{
     tagsList: Array,
     title: String
@@ -37,11 +35,9 @@ export default {
       this.selectedItem = ''
     }
   }
-
 }
 
 </script>
 
 <style scoped>
-
 </style>

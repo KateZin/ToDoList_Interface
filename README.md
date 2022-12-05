@@ -17,11 +17,16 @@ You can keep notes, add task with specific tag and sort all tasks by date and ta
 The application is written on VueJs using framework Vuetify
 
 ## Current version
-- I've added button for user authorization using Google account 
-- Added tasks show mode: list and cards. To switch the mode, you can press switch button in the Show All Tasks page.
-- Added dialog window to edit the task
+- Added task editing and deleting
+- Made user's authorisation (login via Google account and logout button)
+- Made start page layout (when user is not authorized)
+- Added tag editing and deleting (when tag is deleted all tasks with this tag are saved, but they don't have any tag anymore)
+- Added switcher to dark theme
+- Added calendar with clickable tasks on it!!!!!~~~~
+- Changed comment text field. At the moment comment can be written in a few lines
+- Made app's design more beautiful (added some styles)
+- Some more pleasant features for my soul :)
 
 ## Plans 
-- Make edit button clickable. At the moment it doesn't send a request (axios error)
-- Make login/logout button more beautiful
-- Arrange task layout in list of cards
+It is a final version of my project on this term.
+There are some stuff which can be improved, but all necessary things and features were completed.
