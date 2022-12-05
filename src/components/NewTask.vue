@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container class="container">
     <H2 class="text-md-center">Add new Task</H2>
     <v-text-field
         class='task'
@@ -66,7 +66,13 @@
         </v-col>
       </v-row>
       <br>
-      <v-btn @click="createNewTask">Add  task</v-btn>
+      <v-btn
+          @click="createNewTask"
+          color="deep-orange"
+          x-large
+      >
+        Add  task
+      </v-btn>
     </v-container>
   </div>
 </template>
@@ -170,5 +176,8 @@ export default {
   font-family: Verdana;
   font-size: 20px;
   width: 500px;
+}
+.container{
+  margin-bottom: 50px;
 }
 </style>
